@@ -46,3 +46,12 @@ Each **B-tree** consists of many nodes. Each node is one page in length. The B-t
 The **pager** receives commands to read or write pages of data. It is responsible for reading/writing at appropriate offsets in the database file. It also keeps a cache of recently-accessed pages in memory, and determines when those pages need to be written back to disk.
 
 The **os interface** is the later that differs depending on which operating system sqlite was compiled for.
+
+## World's Simplest SQL Compiler and Virtual Machine
+
+We're making a clone of sqlite. The front-end of sqlite is a SQL compiler that parses a string and outputs an internal representation called bytecode. This bytecode is passed to the virtual machine, which executes it.
+
+Breaking things into two steps like this has a couple advantages:
+
+- reduces the complexity of each part (e.g. virtual machine does not worry about syntax errors)
+- allows compiling common queries once and caching the bytecode for improved performance

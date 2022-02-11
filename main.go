@@ -2,37 +2,18 @@ package main
 
 import (
 	"bufio"
-	"fmt"
+	"log"
 	"os"
-	"strings"
+
+	"github.com/leonhfr/go-db/repl"
 )
 
 func main() {
-	prompt()
-}
-
-func prompt() error {
 	r := bufio.NewReader(os.Stdin)
+	w := os.Stderr
 
-	for {
-		fmt.Fprintf(os.Stderr, "db> ")
-
-		input, err := r.ReadString('\n')
-		if err != nil {
-			return err
-		}
-
-		input = strings.TrimSpace(input)
-		if input == ".exit" {
-			break
-		}
-
-		if input == "" {
-			continue
-		}
-
-		fmt.Printf("unrecognized command '%s'\n", input)
+	err := repl.Prompt(r, w)
+	if err != nil {
+		log.Fatal(err)
 	}
-
-	return nil
 }
